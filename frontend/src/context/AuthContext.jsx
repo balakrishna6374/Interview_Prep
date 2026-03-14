@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/auth/login', { email, password });
+    axios.post('https://interview-prep-9obi.onrender.com/api/auth/login', { email, password });
     const { data } = response.data;
     setUser(data);
     return response.data;

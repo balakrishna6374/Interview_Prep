@@ -38,7 +38,7 @@ const Register = () => {
         data.append('profileImage', profileImage);
       }
 
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch('https://interview-prep-9obi.onrender.com/api/auth/register', {
         method: 'POST',
         credentials: 'include',
         body: data
