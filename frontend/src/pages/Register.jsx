@@ -218,7 +218,7 @@ const Register = () => {
                       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
                       : 'border-slate-200 bg-slate-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
                   }`}
-                  placeholder="John Doe"
+                  placeholder="Your Name"
                 />
               </div>
               {formErrors.name && (
@@ -229,7 +229,7 @@ const Register = () => {
                   {formErrors.name}
                 </p>
               )}
-              <p className="mt-1.5 text-xs text-slate-400">Only letters, minimum 4 characters</p>
+              <p className="mt-1.5 text-xs text-slate-400">Characters only</p>
             </div>
             
             <div>
@@ -250,7 +250,7 @@ const Register = () => {
                       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
                       : 'border-slate-200 bg-slate-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
                   }`}
-                  placeholder="you@example.com"
+                  placeholder="you@gmail.com"
                 />
               </div>
               {formErrors.email && (
@@ -261,7 +261,7 @@ const Register = () => {
                   {formErrors.email}
                 </p>
               )}
-              <p className="mt-1.5 text-xs text-slate-400">5 chars before @, starting with letter, min 2 letters</p>
+              <p className="mt-1.5 text-xs text-slate-400"></p>
             </div>
 
             <div>
@@ -320,8 +320,8 @@ const Register = () => {
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400 font-medium">
-          By creating an account, you agree to our Terms of Service
-        </p>
+          
+          </p>
       </div>
     </div>
   );

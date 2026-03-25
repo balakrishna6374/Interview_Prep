@@ -129,20 +129,6 @@ const Login = () => {
             </p>
           </div>
         </div>
-
-        {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/50 animate-slide-up">
-          <p className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
-            <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Demo Credentials:
-          </p>
-          <div className="space-y-1.5 text-sm text-slate-600">
-            <p><span className="font-medium">Admin:</span> admin@interviewprep.com / admin123</p>
-            <p><span className="font-medium">User:</span> user@interviewprep.com / user123</p>
-          </div>
-        </div>
       </div>
     </div>
   );
