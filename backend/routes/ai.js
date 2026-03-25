@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
+const { uploadResume, uploadImage } = require('../middleware/upload');
 const groqService = require('../services/groqService');
 const { body, validationResult } = require('express-validator');
 
@@ -186,6 +187,162 @@ router.post('/compare-answer', protect, [
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to compare answers'
+    });
+  }
+});
+
+router.post('/get-answer', protect, [
+  body('question').notEmpty().withMessage('Question is required')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { question, description } = req.body;
+
+    const answer = await groqService.getAnswer(question, description);
+
+    res.status(200).json({
+      success: true,
+      data: answer
+    });
+  } catch (error) {
+    console.error('Get answer error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to get answer'
+    });
+  }
+});
+
+router.post('/detect-error', protect, uploadImage.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        error: 'No image file provided'
+      });
+    }
+
+    const imageFile = req.file;
+
+    const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`;
+
+    const result = await groqService.detectError(base64Image);
+
+    res.status(200).json({
+      success: true,
+      data: result
+    });
+  } catch (error) {
+    console.error('Detect error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to detect errors'
+    });
+  }
+});
+
+router.post('/extract-skills', uploadResume.single('resume'), protect, async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        error: 'No resume file provided'
+      });
+    }
+
+    const resumeFile = req.file;
+    const resumeText = resumeFile.buffer.toString('utf-8');
+
+    if (!resumeText || resumeText.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Could not read resume file. Please try a different file.'
+      });
+    }
+
+    const skills = await groqService.extractSkillsFromResume(resumeText);
+
+    if (!skills || skills.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Could not extract skills from resume. Please try a different file or format.'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        skills: skills
+      }
+    });
+  } catch (error) {
+    console.error('Extract skills error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to extract skills from resume'
+    });
+  }
+});
+
+router.post('/resume-mock-interview', protect, [
+  body('skills').isArray().withMessage('Skills must be an array'),
+  body('focusAreas').optional().isArray().withMessage('Focus areas must be an array'),
+  body('count').optional().isInt({ min: 1, max: 10 }).withMessage('Count must be between 1 and 10')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { skills, focusAreas } = req.body;
+    const count = Number(req.body.count) || 5;
+
+    const questions = await groqService.generateResumeBasedQuestions(skills, focusAreas || ['Technical', 'Problem Solving', 'Communication'], count);
+
+    res.status(200).json({
+      success: true,
+      data: questions
+    });
+  } catch (error) {
+    console.error('Resume mock interview error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to generate resume-based interview questions'
+    });
+  }
+});
+
+router.post('/job-description-interview', protect, [
+  body('jobTitle').notEmpty().withMessage('Job title is required'),
+  body('jobDescription').notEmpty().withMessage('Job description is required'),
+  body('focusAreas').optional().isArray().withMessage('Focus areas must be an array'),
+  body('count').optional().isInt({ min: 1, max: 10 }).withMessage('Count must be between 1 and 10')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { jobTitle, jobDescription, focusAreas } = req.body;
+    const count = Number(req.body.count) || 5;
+
+    const questions = await groqService.generateJobDescriptionQuestions(jobTitle, jobDescription, focusAreas || ['Technical', 'Problem Solving', 'Communication'], count);
+
+    res.status(200).json({
+      success: true,
+      data: questions
+    });
+  } catch (error) {
+    console.error('Job description interview error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to generate job description-based interview questions'
     });
   }
 });

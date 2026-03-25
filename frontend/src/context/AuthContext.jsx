@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    axios.post('https://interview-prep-9obi.onrender.com/api/auth/login', { email, password });
+    const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
     const { data } = response.data;
     setUser(data);
     return response.data;
@@ -51,8 +51,30 @@ export const AuthProvider = ({ children }) => {
     setUser(prev => ({ ...prev, ...userData }));
   };
 
+  const refreshUser = async (userData) => {
+    if (userData) {
+      setUser(userData);
+    } else {
+      await fetchUser();
+    }
+  };
+
+  const updateProfile = async (formData) => {
+    try {
+      const response = await axios.put('/api/auth/profile', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (response.data.success) {
+        setUser(response.data.data);
+      }
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateUser, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateUser, refreshUser, updateProfile, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const securityMiddleware = require('./middleware/security');
+const { trackApiRequest } = require('./middleware/apiTracker');
 
 const authRoutes = require('./routes/auth');
 const questionRoutes = require('./routes/questions');
@@ -14,6 +15,7 @@ const attemptRoutes = require('./routes/attempts');
 const resumeRoutes = require('./routes/resumes');
 const adminRoutes = require('./routes/admin');
 const aiRoutes = require('./routes/ai');
+const gamificationRoutes = require('./routes/gamification');
 
 const app = express();
 
@@ -26,12 +28,14 @@ securityMiddleware(app);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cookieParser());
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
+
+app.use(trackApiRequest);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/questions', questionRoutes);
@@ -39,6 +43,7 @@ app.use('/api/attempts', attemptRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/gamification', gamificationRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({

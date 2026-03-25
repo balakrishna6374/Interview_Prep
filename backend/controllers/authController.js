@@ -127,6 +127,10 @@ exports.updateProfile = async (req, res, next) => {
       fieldsToUpdate.name = req.body.name;
     }
 
+    if (req.file) {
+      fieldsToUpdate.profileImage = `/uploads/${req.file.filename}`;
+    }
+
     const user = await User.findByIdAndUpdate(
       req.user.id,
       fieldsToUpdate,

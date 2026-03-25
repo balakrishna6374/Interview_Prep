@@ -14,6 +14,10 @@ export default defineConfig({
             res.setHeader('Access-Control-Allow-Credentials', 'true');
           });
         }
+      },
+      '/uploads': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
       }
     }
   }

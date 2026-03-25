@@ -56,6 +56,34 @@ const userSchema = new mongoose.Schema({
     category: String,
     score: Number
   }],
+  gamification: {
+    points: { type: Number, default: 0 },
+    level: { type: Number, default: 1 },
+    streak: { type: Number, default: 0 },
+    longestStreak: { type: Number, default: 0 },
+    lastActiveDate: { type: Date, default: Date.now },
+    badges: [{
+      id: { type: String },
+      name: { type: String },
+      description: { type: String },
+      icon: { type: String },
+      earnedAt: { type: Date, default: Date.now }
+    }],
+    missions: [{
+      id: { type: String },
+      title: { type: String },
+      description: { type: String },
+      type: { type: String, enum: ['daily', 'weekly', 'one-time'] },
+      target: { type: Number },
+      progress: { type: Number, default: 0 },
+      completed: { type: Boolean, default: false },
+      completedAt: { type: Date },
+      reward: { type: Number }
+    }],
+    totalQuestionsAnswered: { type: Number, default: 0 },
+    totalInterviewsCompleted: { type: Number, default: 0 },
+    totalChatMessages: { type: Number, default: 0 }
+  },
   createdAt: {
     type: Date,
     default: Date.now

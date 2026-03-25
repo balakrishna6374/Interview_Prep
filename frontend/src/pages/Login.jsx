@@ -25,41 +25,44 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-accent-50" />
-      <div className="absolute top-0 -left-4 w-72 h-72 bg-brand-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" />
-      <div className="absolute bottom-0 -right-4 w-72 h-72 bg-accent-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{ animationDelay: '2s' }} />
-      
-      <div className="relative w-full max-w-md px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      {/* Background decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl shadow-lg shadow-brand-500/30 mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-xl shadow-blue-500/25 mb-5">
             <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14v7" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-dark-900">Welcome back</h1>
-          <p className="text-dark-500 mt-2">Sign in to continue your preparation</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Welcome back</h1>
+          <p className="text-slate-500 mt-3 text-base">Sign in to continue your preparation</p>
         </div>
 
         {/* Form Card */}
-        <div className="card p-8 animate-slide-up">
+        <div className="card p-6 sm:p-8 animate-slide-up shadow-xl">
           {error && (
-            <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 text-sm flex items-center">
-              <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mb-6 p-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-xl text-red-600 text-sm flex items-center gap-3">
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {error}
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-dark-700 mb-2">Email</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2.5">Email Address</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg className="w-5 h-5 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                   </svg>
                 </div>
@@ -67,7 +70,7 @@ const Login = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="input-field pl-12"
+                  className="input pl-12 py-3.5 text-base"
                   placeholder="you@example.com"
                   required
                 />
@@ -75,10 +78,10 @@ const Login = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-dark-700 mb-2">Password</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2.5">Password</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg className="w-5 h-5 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
@@ -86,8 +89,8 @@ const Login = () => {
                   type="password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="input-field pl-12"
-                  placeholder="••••••••"
+                  className="input pl-12 py-3.5 text-base"
+                  placeholder="Enter your password"
                   required
                 />
               </div>
@@ -96,12 +99,12 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full flex items-center justify-center space-x-2"
+              className="btn-primary w-full py-3.5 text-base font-semibold mt-6"
             >
               {loading ? (
                 <>
                   <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={4} />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
                   <span>Signing in...</span>
@@ -117,10 +120,10 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-dark-500">
+          <div className="mt-8 text-center">
+            <p className="text-slate-500 text-sm">
               Don't have an account?{' '}
-              <Link to="/register" className="text-brand-600 font-medium hover:text-brand-700 transition-colors">
+              <Link to="/register" className="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
                 Create one
               </Link>
             </p>
@@ -128,11 +131,16 @@ const Login = () => {
         </div>
 
         {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-dark-100 animate-slide-up animate-delay-200">
-          <p className="text-sm font-medium text-dark-600 mb-2">Demo Credentials:</p>
-          <div className="space-y-1 text-sm text-dark-500">
-            <p><span className="font-medium text-brand-600">Admin:</span> admin@interviewprep.com / admin123</p>
-            <p><span className="font-medium text-accent-600">User:</span> user@interviewprep.com / user123</p>
+        <div className="mt-6 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/50 animate-slide-up">
+          <p className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+            <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Demo Credentials:
+          </p>
+          <div className="space-y-1.5 text-sm text-slate-600">
+            <p><span className="font-medium">Admin:</span> admin@interviewprep.com / admin123</p>
+            <p><span className="font-medium">User:</span> user@interviewprep.com / user123</p>
           </div>
         </div>
       </div>
